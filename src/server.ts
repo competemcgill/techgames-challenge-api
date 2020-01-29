@@ -1,7 +1,7 @@
 import { app, port } from "./app";
 import mongoose from "mongoose";
 
-const dbUrl = "mongodb://mongo:27017/techgames-api-challenge";
+const dbUrl = "mongodb://mongo:27017/techgames";
 
 mongoose.connect(dbUrl, {
     useNewUrlParser: true,
