@@ -1,6 +1,6 @@
 # techgames-api-challenge
 
-## Requirments
+## Requirements
 
 * [Docker](https://docs.docker.com)
 * [Docker-Compose](https://docs.docker.com/compose)
