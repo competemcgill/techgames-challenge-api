@@ -1,4 +1,4 @@
-# techgames-api-challenge
+# techgames-challenge-api
 
 ## Requirements
 

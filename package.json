@@ -1,5 +1,5 @@
 {
-    "name": "techgames-api-challenge",
+    "name": "techgames-challenge-api",
     "version": "1.0.0",
     "description": "",
     "main": "server.ts",
@@ -15,14 +15,14 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/Compete-McGill/techgames-api-challenge"
+        "url": "git+https://github.com/Compete-McGill/techgames-challenge-api"
     },
     "author": "",
     "license": "ISC",
     "bugs": {
-        "url": "https://github.com/Compete-McGill/techgames-api-challenge/issues"
+        "url": "https://github.com/Compete-McGill/techgames-challenge-api/issues"
     },
-    "homepage": "https://github.com/Compete-McGill/techgames-api-challenge#readme",
+    "homepage": "https://github.com/Compete-McGill/techgames-challenge-api#readme",
     "devDependencies": {
         "@babel/preset-typescript": "^7.3.3",
         "@istanbuljs/nyc-config-typescript": "^0.1.3",
