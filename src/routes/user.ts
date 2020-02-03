@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { userController } from "../controllers/user";
+import { userValidator } from "../util/userValidator";
 
 const userRouter: Router = Router();
 
@@ -20,7 +21,7 @@ const userRouter: Router = Router();
  *          500:
  *              description: Internal server error
  */
-userRouter.get("/", userController.index);
+userRouter.get("/", userValidator("GET /users"), userController.index);
 
 /**
  * @swagger
@@ -48,7 +49,7 @@ userRouter.get("/", userController.index);
  *          500:
  *              description: Internal server error
  */
-userRouter.get("/:userId", userController.show);
+userRouter.get("/:userId", userValidator("GET /users/:userId"), userController.show);
 
 /**
  * @swagger
@@ -83,7 +84,7 @@ userRouter.get("/:userId", userController.show);
  *          500:
  *              description: Internal server error
  */
-userRouter.post("/", userController.create);
+userRouter.post("/", userValidator("POST /users"), userController.create);
 
 /**
  * @swagger
@@ -124,7 +125,7 @@ userRouter.post("/", userController.create);
  *          500:
  *              description: Internal server error
  */
-userRouter.put("/:userId", userController.update);
+userRouter.put("/:userId", userValidator("PUT /users/:userId"), userController.update);
 
 /**
  * @swagger
@@ -150,6 +151,6 @@ userRouter.put("/:userId", userController.update);
  *          500:
  *              description: Internal server error
  */
-userRouter.delete("/:userId", userController.delete);
+userRouter.delete("/:userId", userValidator("DELETE /users/:userId"), userController.delete);
 
 export { userRouter };

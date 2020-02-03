@@ -46,13 +46,193 @@ describe("User controller tests", () => {
     });
 
     describe("GET /users", () => {
-        it("status 200: gets not implemented msg", async () => {
-            const { body } = await chai.request(app).get("/users");
-            const expectedBody = {
-                msg: "Not implemented"
-            }
 
-            expect(body).to.deep.equal(expectedBody);
+    });
+
+    describe("GET /users/:userId", () => {
+        it("status 422: returns an appropriate error message if userId isn't a mongoId", async () => {
+            const { body: user } = await chai.request(app).get("/users/akjlhdsakjhd");
+            const expectedBody = {
+                status: 422,
+                message: "params[userId]: Invalid or missing ':userId'"
+            };
+
+            expect(user).to.deep.equal(expectedBody);
+        });
+    });
+
+    describe("POST /users", () => {
+        it("status 422: returns an appropriate error message if email isn't provided", async () => {
+            const testUserData = {
+                password: "password",
+                githubToken: "token"
+            };
+
+            const { body: user } = await chai.request(app).post("/users").send(testUserData);
+            const expectedBody = {
+                status: 422,
+                message: "body[email]: Invalid or missing 'email'"
+            };
+
+            expect(user).to.deep.equal(expectedBody);
+        });
+
+        it("status 422: returns an appropriate error message if email isn't an email", async () => {
+            const testUserData = {
+                email: "not and email",
+                password: "password",
+                githubToken: "token"
+            };
+
+            const { body: user } = await chai.request(app).post("/users").send(testUserData);
+            const expectedBody = {
+                status: 422,
+                message: "body[email]: Invalid or missing 'email'"
+            };
+
+            expect(user).to.deep.equal(expectedBody);
+        });
+
+        it("status 422: returns an appropriate error message if email isn't a string", async () => {
+            const testUserData = {
+                email: 1,
+                password: "password",
+                githubToken: "token"
+            };
+
+            const { body: user } = await chai.request(app).post("/users").send(testUserData);
+            const expectedBody = {
+                status: 422,
+                message: "body[email]: Invalid or missing 'email'"
+            };
+
+            expect(user).to.deep.equal(expectedBody);
+        });
+
+        it("status 422: returns an appropriate error message if password isn't provided", async () => {
+            const testUserData = {
+                email: "example1@gmail.com",
+                githubToken: "token"
+            };
+
+            const { body: user } = await chai.request(app).post("/users").send(testUserData);
+            const expectedBody = {
+                status: 422,
+                message: "body[password]: Invalid or missing 'password'"
+            };
+
+            expect(user).to.deep.equal(expectedBody);
+        });
+
+        it("status 422: returns an appropriate error message if password isn't a string", async () => {
+            const testUserData = {
+                email: "example1@gmail.com",
+                password: 1,
+                githubToken: "token"
+            };
+
+            const { body: user } = await chai.request(app).post("/users").send(testUserData);
+            const expectedBody = {
+                status: 422,
+                message: "body[password]: Invalid or missing 'password'"
+            };
+
+            expect(user).to.deep.equal(expectedBody);
+        });
+
+        it("status 422: returns an appropriate error message if githubToken isn't provided", async () => {
+            const testUserData = {
+                email: "example1@gmail.com",
+                password: "password"
+            };
+
+            const { body: user } = await chai.request(app).post("/users").send(testUserData);
+            const expectedBody = {
+                status: 422,
+                message: "body[githubToken]: Invalid or missing 'githubToken'"
+            };
+
+            expect(user).to.deep.equal(expectedBody);
+        });
+
+        it("status 422: returns an appropriate error message if githubToken isn't a string", async () => {
+            const testUserData = {
+                email: "example1@gmail.com",
+                password: "passowrd",
+                githubToken: 1
+            };
+
+            const { body: user } = await chai.request(app).post("/users").send(testUserData);
+            const expectedBody = {
+                status: 422,
+                message: "body[githubToken]: Invalid or missing 'githubToken'"
+            };
+
+            expect(user).to.deep.equal(expectedBody);
+        });
+    });
+
+    describe("PUT /users/userId", () => {
+        it("status 422: returns an appropriate error message if userId isn't a mongoId", async () => {
+            const { body: user } = await chai.request(app).put("/users/1");
+            const expectedBody = {
+                status: 422,
+                message: "params[userId]: Invalid or missing ':userId'"
+            };
+
+            expect(user).to.deep.equal(expectedBody);
+        });
+
+        it("status 422: returns an appropriate error message if email isn't an email", async () => {
+            const { body: user } = await chai.request(app).put("/users/" + testUser._id).send({ email: "not an email" });
+            const expectedBody = {
+                status: 422,
+                message: "body[email]: Invalid 'email'"
+            };
+
+            expect(user).to.deep.equal(expectedBody);
+        });
+
+        it("status 422: returns an appropriate error message if email isn't an email", async () => {
+            const { body: user } = await chai.request(app).put("/users/" + testUser._id).send({ email: "not an email" });
+            const expectedBody = {
+                status: 422,
+                message: "body[email]: Invalid 'email'"
+            };
+
+            expect(user).to.deep.equal(expectedBody);
+        });
+
+        it("status 422: returns an appropriate error message if password isn't a string", async () => {
+            const { body: user } = await chai.request(app).put("/users/" + testUser._id).send({ password: 1 });
+            const expectedBody = {
+                status: 422,
+                message: "body[password]: Invalid 'password'"
+            };
+
+            expect(user).to.deep.equal(expectedBody);
+        });
+
+        it("status 422: returns an appropriate error message if githubToken isn't a string", async () => {
+            const { body: user } = await chai.request(app).put("/users/" + testUser._id).send({ githubToken: 1 });
+            const expectedBody = {
+                status: 422,
+                message: "body[githubToken]: Invalid 'githubToken'"
+            };
+
+            expect(user).to.deep.equal(expectedBody);
+        });
+    });
+
+    describe("DELETE /users/userId", () => {
+        it("status 422: returns an appropriate error message if userId isn't a mongoId", async () => {
+            const { body: user } = await chai.request(app).delete("/users/1");
+            const expectedBody = {
+                status: 422,
+                message: "params[userId]: Invalid or missing ':userId'"
+            };
+
+            expect(user).to.deep.equal(expectedBody);
         });
     });
 });
