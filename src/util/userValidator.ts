@@ -13,8 +13,8 @@ export function userValidator(method: string): ValidationChain[] {
         case "POST /users": {
             return [
                 body("email", "Invalid or missing 'email'").exists().isEmail(),
-                body("password", "Invalid or missing 'password'").exists().isString(),
-                body("githubToken", "Invalid or missing 'githubToken'").exists().isString()
+                body("githubToken", "Invalid or missing 'githubToken'").exists().isString(),
+                body("githubUsername", "Invalid or missing 'githubUsername'").exists().isString(),
             ];
         }
         case "PUT /users/:userId": {
