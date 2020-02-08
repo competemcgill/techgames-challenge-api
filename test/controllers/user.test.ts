@@ -81,6 +81,40 @@ describe("User controller tests", () => {
     });
 
     describe("POST /users", () => {
+        it("status 200: returns a user after successful creation", async () => {
+            const testUserData = {
+                email: "example1@gmail.com",
+                githubToken: "token",
+                githubUsername: "example1",
+                githubRepo: "https://github.com/CompeteMcgill/challenge-template",
+                scores: []
+            }
+
+            const { body: user } = await chai.request(app).post("/users").send(testUserData);
+            const foundUser: IUserModel = await userDBInteractions.find(user._id);
+
+            expect(foundUser.email).to.equal("example1@gmail.com");
+            expect(foundUser.githubRepo).to.equal("https://github.com/example1/techgames-api-challenge-template");
+        });
+
+        it("status 400: returns an appropriate error message if user email is in use", async () => {
+            const testUserData = {
+                email: "example@gmail.com",
+                githubToken: "token",
+                githubUsername: "example1",
+                githubRepo: "https://github.com/CompeteMcgill/challenge-template",
+                scores: []
+            }
+
+            const { body: user } = await chai.request(app).post("/users").send(testUserData);
+            const expectedBody = {
+                status: 400,
+                message: "User already exists"
+            };
+
+            expect(user).to.deep.equal(expectedBody);
+        });
+
         it("status 422: returns an appropriate error message if email isn't provided", async () => {
             const testUserData = {
                 githubToken: "token",
