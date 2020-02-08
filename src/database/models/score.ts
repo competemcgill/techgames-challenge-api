@@ -6,43 +6,43 @@ export interface IScoreModel extends IScore, Document {}
 const scoreSchema: Schema = new Schema({
     liveness: {
         type: Boolean,
-        select: false
+        select: true
     },
     authentication: {
         type: String,
-        select: false
+        select: true
     },
     createAccount: {
         type: String,
-        select: false
+        select: true
     },
     authenticate: {
         type: String,
-        select: false
+        select: true
     },
     getArticles: {
         type: String,
-        select: false
+        select: true
     },
     getArticle: {
         type: String,
-        select: false
+        select: true
     },
     postArticle: {
         type: String,
-        select: false
+        select: true
     },
     putArticle: {
         type: String,
-        select: false
+        select: true
     },
     deleteArticle: {
         type: String,
-        select: false
+        select: true
     },
     timestamp: {
         type: String,
-        select: false
+        select: true
     },
 });
 

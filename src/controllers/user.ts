@@ -2,11 +2,17 @@ import { Request, Response } from "express";
 import { validationResult } from "express-validator/check";
 import { errorMessage } from "../util/errorFormatter";
 import { statusCodes } from "../util/statusCodes";
+import {userDBInteractions} from "../database/interactions/user";
 
 const userController = {
 
     index: async (req: Request, res: Response) => {
-        res.status(statusCodes.SUCCESS).send({msg: "Not implemented"});
+        try {
+            const users = await userDBInteractions.all();
+            res.status(statusCodes.SUCCESS).send(users);  
+        } catch(error) {
+            res.status(statusCodes.SERVER_ERROR).send(error);
+        }    
     },
 
     show: async (req: Request, res: Response) => {
