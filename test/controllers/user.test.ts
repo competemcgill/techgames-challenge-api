@@ -29,8 +29,10 @@ describe("User controller tests", () => {
     beforeEach(async () => {
         const testUserData: IUser = {
             email: "example@gmail.com",
-            password: bcryptPassword.generateHash("password"),
-            githubToken: "token"
+            githubToken: "token",
+            githubUsername: "example",
+            githubRepo: "https://github.com/CompeteMcgill/challenge-template",
+            scores: []
         };
 
         testUser = await userDBInteractions.create(testUserData);
@@ -64,8 +66,10 @@ describe("User controller tests", () => {
     describe("POST /users", () => {
         it("status 422: returns an appropriate error message if email isn't provided", async () => {
             const testUserData = {
-                password: "password",
-                githubToken: "token"
+                githubToken: "token",
+                githubUsername: "example",
+                githubRepo: "https://github.com/CompeteMcgill/challenge-template",
+                scores: []
             };
 
             const { body: user } = await chai.request(app).post("/users").send(testUserData);
@@ -80,8 +84,10 @@ describe("User controller tests", () => {
         it("status 422: returns an appropriate error message if email isn't an email", async () => {
             const testUserData = {
                 email: "not and email",
-                password: "password",
-                githubToken: "token"
+                githubToken: "token",
+                githubUsername: "example",
+                githubRepo: "https://github.com/CompeteMcgill/challenge-template",
+                scores: []
             };
 
             const { body: user } = await chai.request(app).post("/users").send(testUserData);
@@ -96,8 +102,10 @@ describe("User controller tests", () => {
         it("status 422: returns an appropriate error message if email isn't a string", async () => {
             const testUserData = {
                 email: 1,
-                password: "password",
-                githubToken: "token"
+                githubToken: "token",
+                githubUsername: "example",
+                githubRepo: "https://github.com/CompeteMcgill/challenge-template",
+                scores: []
             };
 
             const { body: user } = await chai.request(app).post("/users").send(testUserData);
@@ -109,41 +117,12 @@ describe("User controller tests", () => {
             expect(user).to.deep.equal(expectedBody);
         });
 
-        it("status 422: returns an appropriate error message if password isn't provided", async () => {
-            const testUserData = {
-                email: "example1@gmail.com",
-                githubToken: "token"
-            };
-
-            const { body: user } = await chai.request(app).post("/users").send(testUserData);
-            const expectedBody = {
-                status: 422,
-                message: "body[password]: Invalid or missing 'password'"
-            };
-
-            expect(user).to.deep.equal(expectedBody);
-        });
-
-        it("status 422: returns an appropriate error message if password isn't a string", async () => {
-            const testUserData = {
-                email: "example1@gmail.com",
-                password: 1,
-                githubToken: "token"
-            };
-
-            const { body: user } = await chai.request(app).post("/users").send(testUserData);
-            const expectedBody = {
-                status: 422,
-                message: "body[password]: Invalid or missing 'password'"
-            };
-
-            expect(user).to.deep.equal(expectedBody);
-        });
-
         it("status 422: returns an appropriate error message if githubToken isn't provided", async () => {
             const testUserData = {
                 email: "example1@gmail.com",
-                password: "password"
+                githubUsername: "example",
+                githubRepo: "https://github.com/CompeteMcgill/challenge-template",
+                scores: []
             };
 
             const { body: user } = await chai.request(app).post("/users").send(testUserData);
@@ -158,14 +137,51 @@ describe("User controller tests", () => {
         it("status 422: returns an appropriate error message if githubToken isn't a string", async () => {
             const testUserData = {
                 email: "example1@gmail.com",
-                password: "passowrd",
-                githubToken: 1
+                githubToken: 1,
+                githubUsername: "example",
+                githubRepo: "https://github.com/CompeteMcgill/challenge-template",
+                scores: []
             };
 
             const { body: user } = await chai.request(app).post("/users").send(testUserData);
             const expectedBody = {
                 status: 422,
                 message: "body[githubToken]: Invalid or missing 'githubToken'"
+            };
+
+            expect(user).to.deep.equal(expectedBody);
+        });
+
+        it("status 422: returns an appropriate error message if githubUsername isn't provided", async () => {
+            const testUserData = {
+                email: "example1@gmail.com",
+                githubToken: "token",
+                githubRepo: "https://github.com/CompeteMcgill/challenge-template",
+                scores: []
+            };
+
+            const { body: user } = await chai.request(app).post("/users").send(testUserData);
+            const expectedBody = {
+                status: 422,
+                message: "body[githubUsername]: Invalid or missing 'githubUsername'"
+            };
+
+            expect(user).to.deep.equal(expectedBody);
+        });
+
+        it("status 422: returns an appropriate error message if githubUsername isn't a string", async () => {
+            const testUserData = {
+                email: "example1@gmail.com",
+                githubToken: "token",
+                githubUsername: 1,
+                githubRepo: "https://github.com/CompeteMcgill/challenge-template",
+                scores: []
+            };
+
+            const { body: user } = await chai.request(app).post("/users").send(testUserData);
+            const expectedBody = {
+                status: 422,
+                message: "body[githubUsername]: Invalid or missing 'githubUsername'"
             };
 
             expect(user).to.deep.equal(expectedBody);
@@ -198,26 +214,6 @@ describe("User controller tests", () => {
             const expectedBody = {
                 status: 422,
                 message: "body[email]: Invalid 'email'"
-            };
-
-            expect(user).to.deep.equal(expectedBody);
-        });
-
-        it("status 422: returns an appropriate error message if password isn't a string", async () => {
-            const { body: user } = await chai.request(app).put("/users/" + testUser._id).send({ password: 1 });
-            const expectedBody = {
-                status: 422,
-                message: "body[password]: Invalid 'password'"
-            };
-
-            expect(user).to.deep.equal(expectedBody);
-        });
-
-        it("status 422: returns an appropriate error message if githubToken isn't a string", async () => {
-            const { body: user } = await chai.request(app).put("/users/" + testUser._id).send({ githubToken: 1 });
-            const expectedBody = {
-                status: 422,
-                message: "body[githubToken]: Invalid 'githubToken'"
             };
 
             expect(user).to.deep.equal(expectedBody);
