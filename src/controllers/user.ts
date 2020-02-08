@@ -82,7 +82,12 @@ const userController = {
         if (!errors.isEmpty()) {
             res.status(statusCodes.MISSING_PARAMS).json(errors.formatWith(errorMessage).array()[0]);
         } else {
-            res.status(statusCodes.SUCCESS).send({msg: "Not implemented"});
+            try{
+                await userDBInteractions.delete(req.params.userId);
+                res.status(statusCodes.SUCCESS).send({msg: "Not implemented"});
+            } catch (error) {
+                res.status(statusCodes.SERVER_ERROR).send(error);
+            }
         }
     }
 };

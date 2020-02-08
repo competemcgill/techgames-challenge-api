@@ -285,5 +285,12 @@ describe("User controller tests", () => {
 
             expect(user).to.deep.equal(expectedBody);
         });
+        it("status 422: returns a success status on deleting a single user with valid userId", async () => {
+            const usersBeforeDelete = await userDBInteractions.all();
+            expect(usersBeforeDelete.length).to.equal(1);
+            const { body: user } = await chai.request(app).delete("/users/" + testUser._id);
+            const usersAfterDelete = await userDBInteractions.all();
+            expect(usersAfterDelete.length).to.equal(0);
+        });
     });
 });
