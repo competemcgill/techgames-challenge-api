@@ -53,14 +53,31 @@ describe("User controller tests", () => {
 
     describe("GET /users/:userId", () => {
         it("status 422: returns an appropriate error message if userId isn't a mongoId", async () => {
-            const { body: user } = await chai.request(app).get("/users/akjlhdsakjhd");
+            const { body } = await chai.request(app).get("/users/akjlhdsakjhd");
             const expectedBody = {
                 status: 422,
                 message: "params[userId]: Invalid or missing ':userId'"
             };
 
-            expect(user).to.deep.equal(expectedBody);
+            expect(body).to.deep.equal(expectedBody);
         });
+
+        it ("status 200: returns user with corresponding userID", async () => {
+            const res = await chai.request(app).get(`/users/${testUser._id}`);
+
+            expect(res.body.email).to.equal(testUser.email);
+            expect(res.status).to.equal(200);
+
+        })
+
+        it ("status 404: returns an appropriate error message if userID is not found in datebaser", async () => {
+            const { body: user } = await chai.request(app).get(`/users/507f1f77bcf86cd799439011`);
+            const expectedBody = {
+                status: 404,
+                message: "User not found"
+            }
+            expect(user).to.deep.equal(expectedBody);
+        })
     });
 
     describe("POST /users", () => {
