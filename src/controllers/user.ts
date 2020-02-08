@@ -5,6 +5,7 @@ import { statusCodes } from "../util/statusCodes";
 import { userDBInteractions } from "../database/interactions/user";
 import { User, IUserModel } from "../database/models/user";
 import { IUser } from "../interfaces/user";
+import axios from "axios";
 
 const userController = {
 
@@ -38,7 +39,22 @@ const userController = {
                         githubRepo: "https://github.com/" + req.body.githubUsername + "/techgames-api-challenge-template",
                         scores: []
                     };
-                    let newUser: IUserModel = await userDBInteractions.create(new User(userData));
+
+                    if (process.env.NODE_ENV == "production") {
+                        try {
+                            await axios.post("https://api.github.com/repos/Compete-McGill/techgames-api-challenge-template/forks", {}, {
+                                                headers: {
+                                                    Authorization: "Bearer " + userData.githubToken
+                                                }
+                                            });
+                        } catch (error) {
+                            res.status(statusCodes.BAD_REQUEST).send({ status: statusCodes.BAD_REQUEST, message: "Invalid github token" })
+                            return;
+                        }
+                    }
+
+                    const newUser: IUserModel = await userDBInteractions.create(new User(userData));
+
                     res.status(statusCodes.SUCCESS).send(newUser);
                 }
             } catch (error) {
