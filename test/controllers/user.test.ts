@@ -7,7 +7,6 @@ import { app, port } from "../../src/app";
 import { User, IUserModel } from "../../src/database/models/user";
 import { IUser } from "../../src/interfaces/user";
 import { userDBInteractions } from "../../src/database/interactions/user";
-import { AssertionError } from "assert";
 
 chai.use(chaiHttp);
 chai.use(chaiAsPromised);
