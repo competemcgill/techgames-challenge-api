@@ -286,16 +286,6 @@ describe("User controller tests", () => {
 
             expect(user).to.deep.equal(expectedBody);
         });
-
-        it("status 422: returns an appropriate error message if userId does not exist", async () => {
-            const { body: user } = await chai.request(app).delete("/users/507f1f77bcf86cd799439011");
-            const expectedBody = {
-                status: 422,
-                message: "params[userId]: Invalid or missing ':userId'"
-            };
-
-            expect(user).to.deep.equal(expectedBody);
-        });
         
         it("status 200: returns successfully deleted user by its userId", async () => {
             const newTestUserData: IUser = {
