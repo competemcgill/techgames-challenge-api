@@ -279,16 +279,6 @@ describe("User controller tests", () => {
 
             expect(user).to.deep.equal(expectedBody);
         });
-
-        it("status 422: returns an appropriate error message if email isn't an email", async () => {
-            const { body: user } = await chai.request(app).put("/users/" + testUser._id).send({ email: "not an email" });
-            const expectedBody = {
-                status: 422,
-                message: "body[email]: Invalid 'email'"
-            };
-
-            expect(user).to.deep.equal(expectedBody);
-        });
     });
 
     describe("DELETE /users/userId", () => {
@@ -300,6 +290,26 @@ describe("User controller tests", () => {
             };
 
             expect(user).to.deep.equal(expectedBody);
+        });
+
+        it("status 404: returns an appropriate error message if userId is not found", async () => {
+            const { body: user } = await chai.request(app).delete('/users/507f1f77bcf86cd799439011');
+            const userAfterDelete = await userDBInteractions.find("507f1f77bcf86cd799439011");  
+            const expectedBody = {
+                status: 404,
+                message: "User not found"
+            }
+
+            expect(user).to.deep.equal(expectedBody);
+        });
+        
+        it("status 200: returns successfully deleted user by its userId", async () => {
+            const userBeforeDelete = await userDBInteractions.find(testUser._id);
+            expect(userBeforeDelete).to.not.be.null;
+            const res = await chai.request(app).delete("/users/" + testUser._id);
+            expect(res.status).to.equal(200);
+            const userAfterDelete = await userDBInteractions.find(testUser._id);  
+            expect(userAfterDelete).to.be.null;
         });
     });
 });
