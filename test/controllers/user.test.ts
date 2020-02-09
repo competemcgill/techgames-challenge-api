@@ -7,7 +7,6 @@ import { app, port } from "../../src/app";
 import { User, IUserModel } from "../../src/database/models/user";
 import { IUser } from "../../src/interfaces/user";
 import { userDBInteractions } from "../../src/database/interactions/user";
-import { AssertionError } from "assert";
 
 chai.use(chaiHttp);
 chai.use(chaiAsPromised);
@@ -54,6 +53,7 @@ describe("User controller tests", () => {
             expect(users.length).to.equal(1);
             expect(users[0].email).to.equal(testUser.email);
         });
+
         it("status 200: returns successfully a list of multiple users", async () => {
             const newTestUserData: IUser = {
                 email: "instance@gmail.com",
