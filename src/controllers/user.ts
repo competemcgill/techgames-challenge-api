@@ -90,7 +90,7 @@ const userController = {
         } else {
             try{
                 const user = await userDBInteractions.delete(req.params.userId);
-                res.status(statusCodes.SUCCESS).send({msg:user });
+                res.status(statusCodes.SUCCESS).send(user);
             } catch (error) {
                 res.status(statusCodes.SERVER_ERROR).send(error);
             }
