@@ -280,16 +280,6 @@ describe("User controller tests", () => {
 
             expect(user).to.deep.equal(expectedBody);
         });
-
-        it("status 422: returns an appropriate error message if email isn't an email", async () => {
-            const { body: user } = await chai.request(app).put("/users/" + testUser._id).send({ email: "not an email" });
-            const expectedBody = {
-                status: 422,
-                message: "body[email]: Invalid 'email'"
-            };
-
-            expect(user).to.deep.equal(expectedBody);
-        });
     });
 
     describe("DELETE /users/userId", () => {
