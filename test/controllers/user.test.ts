@@ -48,7 +48,28 @@ describe("User controller tests", () => {
     });
 
     describe("GET /users", () => {
+        it("status 200: returns successfully a list of 1 user", async () => {
+            const {body : users} = await chai.request(app).get("/users");
+            expect(users.length).to.equal(1);
+            expect(users[0].email).to.equal(testUser.email);
+        });
 
+        it("status 200: returns successfully a list of multiple users", async () => {
+            const newTestUserData: IUser = {
+                email: "instance@gmail.com",
+                githubToken: "newToken",
+                githubUsername: "newExample",
+                githubRepo: "https://github.com/CompeteMcgill/challenge-template2",
+                scores: []
+            };
+    
+            const newTestUser = await userDBInteractions.create(newTestUserData);
+            const {body : users} = await chai.request(app).get("/users");
+            const expectedBody =  await userDBInteractions.all();
+            expect(users.length).to.equal(2);
+            expect(users[0].email).to.equal(expectedBody[0].email);
+            expect(users[1].email).to.equal(expectedBody[1].email);
+        });
     });
 
     describe("GET /users/:userId", () => {

@@ -10,7 +10,12 @@ import axios from "axios";
 const userController = {
 
     index: async (req: Request, res: Response) => {
-        res.status(statusCodes.SUCCESS).send({msg: "Not implemented"});
+        try {
+            const users = await userDBInteractions.all();
+            res.status(statusCodes.SUCCESS).send(users);  
+        } catch(error) {
+            res.status(statusCodes.SERVER_ERROR).send(error);
+        }    
     },
 
     show: async (req: Request, res: Response) => {
