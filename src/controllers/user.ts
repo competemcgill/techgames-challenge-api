@@ -93,8 +93,7 @@ const userController = {
                 if(user) {
                     await userDBInteractions.delete(req.params.userId);
                     res.status(statusCodes.SUCCESS).send(user);
-                   }
-                else {
+                } else {
                     res.status(statusCodes.NOT_FOUND).send({status: statusCodes.NOT_FOUND, message: "User not found" });
                 }
             } catch (error) {
