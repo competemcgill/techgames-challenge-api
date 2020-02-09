@@ -54,6 +54,7 @@ describe("User controller tests", () => {
             expect(users.length).to.equal(1);
             expect(users[0].email).to.equal(testUser.email);
         });
+
         it("status 200: returns successfully a list of multiple users", async () => {
             const newTestUserData: IUser = {
                 email: "instance@gmail.com",
@@ -285,12 +286,32 @@ describe("User controller tests", () => {
 
             expect(user).to.deep.equal(expectedBody);
         });
-        it("status 422: returns a success status on deleting a single user with valid userId", async () => {
+
+        it("status 422: returns an appropriate error message if userId does not exist", async () => {
+            const { body: user } = await chai.request(app).delete("/users/507f1f77bcf86cd799439011");
+            const expectedBody = {
+                status: 422,
+                message: "params[userId]: Invalid or missing ':userId'"
+            };
+
+            expect(user).to.deep.equal(expectedBody);
+        });
+        
+        it("status 200: returns successfully deleted user by its userId", async () => {
+            const newTestUserData: IUser = {
+                email: "instance@gmail.com",
+                githubToken: "newToken",
+                githubUsername: "newExample",
+                githubRepo: "https://github.com/CompeteMcgill/challenge-template2",
+                scores: []
+            };   
+            const newTestUser = await userDBInteractions.create(newTestUserData);
+
             const usersBeforeDelete = await userDBInteractions.all();
-            expect(usersBeforeDelete.length).to.equal(1);
+            expect(usersBeforeDelete.length).to.equal(2);
             const { body: user } = await chai.request(app).delete("/users/" + testUser._id);
             const usersAfterDelete = await userDBInteractions.all();
-            expect(usersAfterDelete.length).to.equal(0);
+            expect(usersAfterDelete.length).to.equal(1);
         });
     });
 });
