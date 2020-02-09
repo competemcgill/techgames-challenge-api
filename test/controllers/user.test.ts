@@ -64,13 +64,12 @@ describe("User controller tests", () => {
 
         it ("status 200: returns user with corresponding userID", async () => {
             const res = await chai.request(app).get(`/users/${testUser._id}`);
-
             expect(res.body.email).to.equal(testUser.email);
             expect(res.status).to.equal(200);
 
-        })
+        });
 
-        it ("status 404: returns an appropriate error message if userID is not found in datebaser", async () => {
+        it ("status 404: returns an appropriate error message if userID is not found in database", async () => {
             const { body: user } = await chai.request(app).get(`/users/507f1f77bcf86cd799439011`);
             const expectedBody = {
                 status: 404,

@@ -17,15 +17,13 @@ const userController = {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             res.status(statusCodes.MISSING_PARAMS).json(errors.formatWith(errorMessage).array()[0]);
-        }
-        else {
+        } else {
             try {
                 const userId: string = req.params.userId;
                 const user: IUserModel = await userDBInteractions.find(userId);
-                user? res.status(statusCodes.SUCCESS).send(user) : res.status(statusCodes.NOT_FOUND).send({status: 404, message: "User not found" });
-            }
-            catch(error){
-                res.status(500).send(error);
+                user? res.status(statusCodes.SUCCESS).send(user) : res.status(statusCodes.NOT_FOUND).send({status: statusCodes.NOT_FOUND, message: "User not found" });
+            } catch(error) {
+                res.status(statusCodes.SERVER_ERROR).send(error);
             }
         }
     },
