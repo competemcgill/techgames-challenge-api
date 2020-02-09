@@ -90,12 +90,12 @@ const userController = {
         } else {
             try{
                 const user = await userDBInteractions.find(req.params.userId);
-                if(user == null) {
-                    res.status(statusCodes.NOT_FOUND).send({status: statusCodes.NOT_FOUND, message: "User not found" });
-                }
-                else {
+                if(user) {
                     await userDBInteractions.delete(req.params.userId);
                     res.status(statusCodes.SUCCESS).send(user);
+                   }
+                else {
+                    res.status(statusCodes.NOT_FOUND).send({status: statusCodes.NOT_FOUND, message: "User not found" });
                 }
             } catch (error) {
                 res.status(statusCodes.SERVER_ERROR).send(error);
