@@ -89,8 +89,14 @@ const userController = {
             res.status(statusCodes.MISSING_PARAMS).json(errors.formatWith(errorMessage).array()[0]);
         } else {
             try{
-                const user = await userDBInteractions.delete(req.params.userId);
-                res.status(statusCodes.SUCCESS).send(user);
+                const user = await userDBInteractions.find(req.params.userId);
+                if(user == null) {
+                    res.status(statusCodes.NOT_FOUND).send({status: statusCodes.NOT_FOUND, message: "User not found" });
+                }
+                else {
+                    await userDBInteractions.delete(req.params.userId);
+                    res.status(statusCodes.SUCCESS).send(user);
+                }
             } catch (error) {
                 res.status(statusCodes.SERVER_ERROR).send(error);
             }
