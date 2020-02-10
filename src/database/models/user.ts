@@ -21,10 +21,10 @@ const userSchema: Schema = new Schema({
         type: String,
         select: true
     },
-    scores: {
-        type: [Schema.Types.ObjectId],
+    scores: [{
+        type: Schema.Types.ObjectId,
         ref: "Score"
-    }
+    }]
 });
 
 const User: Model<IUserModel> = model<IUserModel>("User", userSchema);

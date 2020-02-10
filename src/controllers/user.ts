@@ -6,6 +6,9 @@ import { userDBInteractions } from "../database/interactions/user";
 import { User, IUserModel } from "../database/models/user";
 import { IUser } from "../interfaces/user";
 import axios from "axios";
+import { IScore } from "interfaces/score";
+import { IScoreModel } from "database/models/score";
+import { scoreDBInteractions } from "database/interactions/score";
 
 const userController = {
 
@@ -79,7 +82,85 @@ const userController = {
         if (!errors.isEmpty()) {
             res.status(statusCodes.MISSING_PARAMS).json(errors.formatWith(errorMessage).array()[0]);
         } else {
-            res.status(statusCodes.SUCCESS).send({msg: "Not implemented"});
+            try {
+                const { userId } = req.params;
+                const user: IUserModel = await userDBInteractions.find(userId);
+                if (!user)
+                    res.status(statusCodes.NOT_FOUND).send({ status: statusCodes.NOT_FOUND, message: "User not found" });
+                else {
+                    const userObject: IUser = {
+                        email: user.email,
+                        githubRepo: user.githubRepo,
+                        githubToken: user.githubToken,
+                        githubUsername: user.githubUsername,
+                        scores: user.scores
+                    };
+                    const updatedVariables = {
+                        email: req.body.email,
+                        githubRepo: req.body.githubRepo,
+                        githubToken: req.body.githubToken,
+                        githubUsername: req.body.githubUsername,
+                        scores: user.scores
+                    };
+                    const updatedUserBody: IUser = {
+                        ...userObject,
+                        ...updatedVariables
+                    };
+
+                    const updatedUser: IUserModel = await userDBInteractions.update(userId, updatedUserBody);
+                    res.status(statusCodes.SUCCESS).send(updatedUser);
+                }
+            } catch (error) {
+                res.status(statusCodes.SERVER_ERROR).send(error);
+            }
+        }
+    },
+
+    updateScore: async (req: Request, res: Response) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            res.status(statusCodes.MISSING_PARAMS).json(errors.formatWith(errorMessage).array()[0]);
+        } else {
+            try {
+                const { userId } = req.params;
+                const user: IUserModel = await userDBInteractions.find(userId);
+                if (!user)
+                    res.status(statusCodes.NOT_FOUND).send({ status: statusCodes.NOT_FOUND, message: "User not found" });
+                else {
+                    const scoreData: IScore = {
+                        liveness: req.body.liveness,
+                        authenticate200: req.body.authenticate200,
+                        authenticate403: req.body.authenticate403,
+                        createAccount201: req.body.createAccount201,
+                        createAccount400: req.body.createAccount400,
+                        createAccount500: req.body.createAccount500,
+                        indexArticles: req.body.indexArticles,
+                        showArticles200: req.body.showArticles200,
+                        showArticles404: req.body.showArticles404,
+                        createArticles201: req.body.createArticles201,
+                        createArticles400: req.body.createAccount400,
+                        createArticles403: req.body.createArticles403,
+                        updateArticles200: req.body.updateArticles200,
+                        updateArticles400: req.body.updateArticles400,
+                        updateArticles401: req.body.updateArticles401,
+                        updateArticles403: req.body.updateArticles403,
+                        updateArticles404: req.body.updateArticles404,
+                        deleteArticles200: req.body.deleteArticles200,
+                        deleteArticles401: req.body.deleteArticles401,
+                        deleteArticles403: req.body.deleteArticles403,
+                        deleteArticles404: req.body.deleteArticles404,
+                        timestamp: Date.now().toString(),
+                    }
+
+                    const newScore: IScoreModel = await scoreDBInteractions.create(scoreData);
+                    user.scores.push(newScore._id)
+                    user.save()
+
+                    res.status(statusCodes.SUCCESS).send(newScore);
+                }
+            } catch (error) {
+                res.status(statusCodes.SERVER_ERROR).send(error);
+            }
         }
     },
 
