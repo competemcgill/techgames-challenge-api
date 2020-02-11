@@ -15,10 +15,10 @@ const userController = {
     index: async (req: Request, res: Response) => {
         try {
             const users = await userDBInteractions.all();
-            res.status(statusCodes.SUCCESS).send(users);  
-        } catch(error) {
+            res.status(statusCodes.SUCCESS).send(users);
+        } catch (error) {
             res.status(statusCodes.SERVER_ERROR).send(error);
-        }    
+        }
     },
 
     show: async (req: Request, res: Response) => {
@@ -29,8 +29,8 @@ const userController = {
             try {
                 const userId: string = req.params.userId;
                 const user: IUserModel = await userDBInteractions.find(userId);
-                user? res.status(statusCodes.SUCCESS).send(user) : res.status(statusCodes.NOT_FOUND).send({status: statusCodes.NOT_FOUND, message: "User not found" });
-            } catch(error) {
+                user ? res.status(statusCodes.SUCCESS).send(user) : res.status(statusCodes.NOT_FOUND).send({ status: statusCodes.NOT_FOUND, message: "User not found" });
+            } catch (error) {
                 res.status(statusCodes.SERVER_ERROR).send(error);
             }
         }
@@ -57,10 +57,10 @@ const userController = {
                     if (process.env.NODE_ENV == "production") {
                         try {
                             await axios.post("https://api.github.com/repos/Compete-McGill/techgames-api-challenge-template/forks", {}, {
-                                                headers: {
-                                                    Authorization: "Bearer " + userData.githubToken
-                                                }
-                                            });
+                                headers: {
+                                    Authorization: "Bearer " + userData.githubToken
+                                }
+                            });
                         } catch (error) {
                             res.status(statusCodes.BAD_REQUEST).send({ status: statusCodes.BAD_REQUEST, message: "Invalid github token" })
                             return;
@@ -163,13 +163,13 @@ const userController = {
         if (!errors.isEmpty()) {
             res.status(statusCodes.MISSING_PARAMS).json(errors.formatWith(errorMessage).array()[0]);
         } else {
-            try{
+            try {
                 const user = await userDBInteractions.find(req.params.userId);
-                if(user) {
+                if (user) {
                     await userDBInteractions.delete(req.params.userId);
                     res.status(statusCodes.SUCCESS).send(user);
                 } else {
-                    res.status(statusCodes.NOT_FOUND).send({status: statusCodes.NOT_FOUND, message: "User not found" });
+                    res.status(statusCodes.NOT_FOUND).send({ status: statusCodes.NOT_FOUND, message: "User not found" });
                 }
             } catch (error) {
                 res.status(statusCodes.SERVER_ERROR).send(error);
