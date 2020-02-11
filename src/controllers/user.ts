@@ -6,9 +6,9 @@ import { userDBInteractions } from "../database/interactions/user";
 import { User, IUserModel } from "../database/models/user";
 import { IUser } from "../interfaces/user";
 import axios from "axios";
-import { IScore } from "interfaces/score";
-import { IScoreModel } from "database/models/score";
-import { scoreDBInteractions } from "database/interactions/score";
+import { IScore } from "../interfaces/score";
+import { IScoreModel } from "../database/models/score";
+import { scoreDBInteractions } from "../database/interactions/score";
 
 const userController = {
 
@@ -95,16 +95,10 @@ const userController = {
                         githubUsername: user.githubUsername,
                         scores: user.scores
                     };
-                    const updatedVariables = {
-                        email: req.body.email,
-                        githubRepo: req.body.githubRepo,
-                        githubToken: req.body.githubToken,
-                        githubUsername: req.body.githubUsername,
-                        scores: user.scores
-                    };
+
                     const updatedUserBody: IUser = {
                         ...userObject,
-                        ...updatedVariables
+                        ...req.body
                     };
 
                     const updatedUser: IUserModel = await userDBInteractions.update(userId, updatedUserBody);

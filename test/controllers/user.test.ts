@@ -270,6 +270,16 @@ describe("User controller tests", () => {
             expect(user).to.deep.equal(expectedBody);
         });
 
+        it("status 404: returns an appropriate error message if userId does not exist", async () => {
+            const { body: user } = await chai.request(app).put('/users/507f1f77bcf86cd799439011');
+            const expectedBody = {
+                status: 404,
+                message: "User not found"
+            };
+
+            expect(user).to.deep.equal(expectedBody);
+        });
+
         it("status 422: returns an appropriate error message if email isn't an email", async () => {
             const { body: user } = await chai.request(app).put("/users/" + testUser._id).send({ email: "not an email" });
             const expectedBody = {
