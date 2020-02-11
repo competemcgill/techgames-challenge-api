@@ -333,7 +333,6 @@ describe("User controller tests", () => {
             }
             const { body: score } = await chai.request(app).post("/users/" + testUser._id + "/updateScore").send(testScore);
             const user: IUserModel = await userDBInteractions.find(testUser._id);
-
             expect(user.scores).to.have.length.above(0);
             expect(user.scores[0].toString()).to.equal(score._id);
             expect(score.timestamp).to.exist;
