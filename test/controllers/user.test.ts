@@ -271,7 +271,13 @@ describe("User controller tests", () => {
         });
 
         it("status 404: returns an appropriate error message if userId does not exist", async () => {
-            const { body: user } = await chai.request(app).put('/users/507f1f77bcf86cd799439011');
+            const { body: user } = await chai.request(app).put("/users/507f1f77bcf86cd799439011")
+            .send({ email: "example1@gmail.com" })
+            .send({ githubRepo: "https://github.com/CompeteMcgill/challenge-template_new" })
+            .send({ githubToken: "token_new" })
+            .send({ githubUsername: "example_new" })
+            .send({ scores: [] });     
+            
             const expectedBody = {
                 status: 404,
                 message: "User not found"
@@ -289,6 +295,49 @@ describe("User controller tests", () => {
 
             expect(user).to.deep.equal(expectedBody);
         });
+
+        it("status 422: returns an appropriate error message if githubUsername isn't a string", async () => {
+            const { body: user } = await chai.request(app).put("/users/" + testUser._id).send({ githubUsername: 1 });
+            const expectedBody = {
+                status: 422,
+                message: "body[githubUsername]: Invalid or missing 'githubUsername'"
+            };
+
+            expect(user).to.deep.equal(expectedBody);
+        });
+
+        it("status 422: returns an appropriate error message if githubToken isn't a string", async () => {
+            const { body: user } = await chai.request(app).put("/users/" + testUser._id).send({ githubToken: 1 });
+            const expectedBody = {
+                status: 422,
+                message: "body[githubToken]: Invalid 'githubToken'"
+            };
+
+            expect(user).to.deep.equal(expectedBody);
+        });
+
+        it("status 200: updates a user email", async () => {
+            const { body: updatedUser } = await chai.request(app).put("/users/" + testUser._id)
+            .send({ email: "example1@gmail.com" })
+            .send({ githubRepo: "https://github.com/CompeteMcgill/challenge-template_new" })
+            .send({ githubToken: "token_new" })
+            .send({ githubUsername: "example_new" })
+            .send({ scores: [] });     
+                
+            const foundUser: IUserModel = await userDBInteractions.find(testUser._id);
+
+            expect(updatedUser.email).to.equal("example1@gmail.com");
+            expect(updatedUser.githubRepo).to.equal("https://github.com/CompeteMcgill/challenge-template_new");
+            expect(updatedUser.githubToken).to.equal("token_new");
+            expect(updatedUser.githubUsername).to.equal("example_new");
+            expect(updatedUser.scores).to.deep.equal([]);
+
+            expect(foundUser.email).to.equal("example1@gmail.com");
+            expect(foundUser.githubRepo).to.equal("https://github.com/CompeteMcgill/challenge-template_new");
+            expect(foundUser.githubToken).to.equal("token_new");
+            expect(foundUser.githubUsername).to.equal("example_new");
+            expect(foundUser.scores).to.deep.equal([]);
+        });
     });
 
     describe("DELETE /users/userId", () => {
@@ -304,7 +353,6 @@ describe("User controller tests", () => {
 
         it("status 404: returns an appropriate error message if userId is not found", async () => {
             const { body: user } = await chai.request(app).delete('/users/507f1f77bcf86cd799439011');
-            const userAfterDelete = await userDBInteractions.find("507f1f77bcf86cd799439011");  
             const expectedBody = {
                 status: 404,
                 message: "User not found"

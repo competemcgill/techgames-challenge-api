@@ -22,7 +22,8 @@ export function userValidator(method: string): ValidationChain[] {
                 param("userId", "Invalid or missing ':userId'").exists().isMongoId(),
                 body("email", "Invalid 'email'").optional().isEmail(),
                 body("password", "Invalid 'password'").optional().isString(),
-                body("githubToken", "Invalid 'githubToken'").optional().isString()
+                body("githubToken", "Invalid 'githubToken'").optional().isString(),
+                body("githubUsername", "Invalid or missing 'githubUsername'").exists().isString()
             ];
         }
         case "POST /users/:userId/updateScore": {
