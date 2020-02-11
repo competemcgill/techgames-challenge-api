@@ -337,6 +337,7 @@ describe("User controller tests", () => {
             console.log(score);
             expect(user.scores).to.have.length.above(0);
             expect(user.scores[0].toString()).to.equal(score._id);
+            expect(score.timestamp).to.exist;
         });
     })
 
