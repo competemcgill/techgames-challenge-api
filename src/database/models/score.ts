@@ -8,40 +8,88 @@ const scoreSchema: Schema = new Schema({
         type: Boolean,
         select: true
     },
-    authentication: {
-        type: String,
+    authenticate200: {
+        type: Boolean,
         select: true
     },
-    createAccount: {
-        type: String,
+    authenticate403: {
+        type: Boolean,
         select: true
     },
-    authenticate: {
-        type: String,
+    createAccount201: {
+        type: Boolean,
         select: true
     },
-    getArticles: {
-        type: String,
+    createAccount400: {
+        type: Boolean,
         select: true
     },
-    getArticle: {
-        type: String,
+    createAccount500: {
+        type: Boolean,
         select: true
     },
-    postArticle: {
-        type: String,
+    indexArticles: {
+        type: Boolean,
         select: true
     },
-    putArticle: {
-        type: String,
+    showArticles200: {
+        type: Boolean,
         select: true
     },
-    deleteArticle: {
-        type: String,
+    showArticles404: {
+        type: Boolean,
+        select: true
+    },
+    createArticles201: {
+        type: Boolean,
+        select: true
+    },
+    createArticles400: {
+        type: Boolean,
+        select: true
+    },
+    createArticles403: {
+        type: Boolean,
+        select: true
+    },
+    updateArticles200: {
+        type: Boolean,
+        select: true
+    },
+    updateArticles400: {
+        type: Boolean,
+        select: true
+    },
+    updateArticles401: {
+        type: Boolean,
+        select: true
+    },
+    updateArticles403: {
+        type: Boolean,
+        select: true
+    },
+    updateArticles404: {
+        type: Boolean,
         select: true
     },
     timestamp: {
         type: String,
+        select: true
+    },
+    deleteArticles200: {
+        type: Boolean,
+        select: true
+    },
+    deleteArticles401: {
+        type: Boolean,
+        select: true
+    },
+    deleteArticles403: {
+        type: Boolean,
+        select: true
+    },
+    deleteArticles404: {
+        type: Boolean,
         select: true
     },
 });

@@ -129,6 +129,34 @@ userRouter.put("/:userId", userValidator("PUT /users/:userId"), userController.u
 
 /**
  * @swagger
+ * /users/{userId}/updateScore:
+ *  post:
+ *      description: Updates a user's score
+ *      tags:
+ *          - Users
+ *      parameters:
+ *          - in: body
+ *            name: userData
+ *            description: email or password of the new User
+ *            schema:
+ *                type: object
+ *                properties:
+ *                example:
+ *      produces:
+ *          - application/json
+ *      responses:
+ *          200:
+ *              description: Returns new User
+ *          400:
+ *              description: User already exists
+ *          422:
+ *              description: Validation error
+ *          500:
+ *              description: Internal server error
+ */
+userRouter.post("/:userId/updateScore", userValidator("POST /users/:userId/updateScore"), userController.updateScore);
+/**
+ * @swagger
  * /user/{userId}:
  *  delete:
  *      description: Deletes a specific User
