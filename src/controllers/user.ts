@@ -98,7 +98,8 @@ const userController = {
 
                     const updatedUserBody: IUser = {
                         ...userObject,
-                        ...req.body
+                        ...req.body,
+                        scores: user.scores
                     };
 
                     const updatedUser: IUserModel = await userDBInteractions.update(userId, updatedUserBody);

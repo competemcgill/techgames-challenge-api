@@ -154,7 +154,7 @@ userRouter.put("/:userId", userValidator("PUT /users/:userId"), userController.u
  *          500:
  *              description: Internal server error
  */
-userRouter.post("/", userValidator("POST /users/:userId/updateScore"), userController.updateScore);
+userRouter.post("/:userId/updateScore", userValidator("POST /users/:userId/updateScore"), userController.updateScore);
 /**
  * @swagger
  * /user/{userId}:

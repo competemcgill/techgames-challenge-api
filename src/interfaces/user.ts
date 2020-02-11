@@ -5,5 +5,5 @@ export interface IUser {
     githubToken: string;
     githubUsername: string;
     githubRepo: string;
-    scores: IScore[];
+    scores: string[];
 }

@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import chaiHttp from "chai-http";
 import chaiAsPromised from "chai-as-promised";
-import chai, { expect } from "chai";
+import chai, {expect} from "chai";
 import { bcryptPassword } from "../../src/util/bcrypt";
 import { app, port } from "../../src/app";
 import { User, IUserModel } from "../../src/database/models/user";
@@ -10,6 +10,7 @@ import { userDBInteractions } from "../../src/database/interactions/user";
 
 chai.use(chaiHttp);
 chai.use(chaiAsPromised);
+
 
 let server: import("http").Server;
 let testUser: IUserModel;
@@ -259,6 +260,86 @@ describe("User controller tests", () => {
         });
     });
 
+    describe("POST /users/:userId/updateScore", () => {
+
+        it("status 422: returns an appropriate error message if userId isn't a mongoId", async () => {
+            const { body: score } = await chai.request(app).post("/users/1/updateScore");
+            const expectedBody = {
+                status: 422,
+                message: "params[userId]: Invalid or missing ':userId'"
+            };
+
+            expect(score).to.deep.equal(expectedBody);
+        });
+
+        it("status 404: returns an appropriate error message if userId does not exist", async () => {
+            const testScore = {
+                liveness: true,
+                authenticate200: true,
+                authenticate403: true,
+                createAccount201: true,
+                createAccount400: true,
+                createAccount500: true,
+                indexArticles: true,
+                showArticles200: true,
+                showArticles404: true,
+                createArticles201: true,
+                createArticles400: true,
+                createArticles403: true,
+                updateArticles200: true,
+                updateArticles400: true,
+                updateArticles401: true,
+                updateArticles403: true,
+                updateArticles404: true,
+                deleteArticles200: true,
+                deleteArticles401: true,
+                deleteArticles403: true,
+                deleteArticles404: true,
+            }
+            const { body: score } = await chai.request(app).post("/users/507f1f77bcf86cd799439011/updateScore").send(testScore);   
+            
+            const expectedBody = {
+                status: 404,
+                message: "User not found"
+            };
+
+            expect(score).to.deep.equal(expectedBody);
+        });
+
+        it("status 200: returns a user after successful creation", async () => {
+
+            const testScore = {
+                liveness: true,
+                authenticate200: true,
+                authenticate403: true,
+                createAccount201: true,
+                createAccount400: true,
+                createAccount500: true,
+                indexArticles: true,
+                showArticles200: true,
+                showArticles404: true,
+                createArticles201: true,
+                createArticles400: true,
+                createArticles403: true,
+                updateArticles200: true,
+                updateArticles400: true,
+                updateArticles401: true,
+                updateArticles403: true,
+                updateArticles404: true,
+                deleteArticles200: true,
+                deleteArticles401: true,
+                deleteArticles403: true,
+                deleteArticles404: true,
+            }
+            const { body: score } = await chai.request(app).post("/users/" + testUser._id + "/updateScore").send(testScore);
+            const user: IUserModel = await userDBInteractions.find(testUser._id);
+            console.log(user);
+            console.log(score);
+            expect(user.scores).to.have.length.above(0);
+            expect(user.scores[0].toString()).to.equal(score._id);
+        });
+    })
+
     describe("PUT /users/userId", () => {
         it("status 422: returns an appropriate error message if userId isn't a mongoId", async () => {
             const { body: user } = await chai.request(app).put("/users/1");
@@ -330,13 +411,13 @@ describe("User controller tests", () => {
             expect(updatedUser.githubRepo).to.equal("https://github.com/CompeteMcgill/challenge-template_new");
             expect(updatedUser.githubToken).to.equal("token_new");
             expect(updatedUser.githubUsername).to.equal("example_new");
-            expect(updatedUser.scores).to.deep.equal([]);
+            expect(updatedUser.scores).to.deep.equal(testUser.scores);
 
             expect(foundUser.email).to.equal("example1@gmail.com");
             expect(foundUser.githubRepo).to.equal("https://github.com/CompeteMcgill/challenge-template_new");
             expect(foundUser.githubToken).to.equal("token_new");
             expect(foundUser.githubUsername).to.equal("example_new");
-            expect(foundUser.scores).to.deep.equal([]);
+            expect(foundUser.scores).to.deep.equal(testUser.scores);
         });
     });
 
