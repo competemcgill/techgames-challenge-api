@@ -17,7 +17,8 @@ const authController = {
                 grant_type: 'authorization_code'
             });
 
-            const token = parseQueryString(data).access_token;
+            const githubQueryRes = parseQueryString(data);
+            const token = githubQueryRes.access_token;
 
             if (!token) {
                 res.status(statusCodes.BAD_REQUEST).send({ status: statusCodes.BAD_REQUEST, message: "Invalid user" });
@@ -30,7 +31,10 @@ const authController = {
 
                 const foundUser: IUserModel = await userDBInteractions.findByGithubUsername(githubUser.login);
                 if (foundUser) {
-                    res.status(statusCodes.SUCCESS).send(foundUser);
+                    res.status(statusCodes.SUCCESS).send({
+                        ...foundUser,
+                        ...githubQueryRes
+                    });
                 } else {
                     const userData: IUser = {
                         email: "",
@@ -55,7 +59,10 @@ const authController = {
 
                     const newUser: IUserModel = await userDBInteractions.create(new User(userData));
 
-                    res.status(statusCodes.SUCCESS).send(newUser);
+                    res.status(statusCodes.SUCCESS).send({
+                        ...newUser,
+                        ...githubQueryRes
+                    });
                 }
             }
         } catch (error) {
