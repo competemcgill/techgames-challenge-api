@@ -275,25 +275,17 @@ describe("User controller tests", () => {
         it("status 404: returns an appropriate error message if userId does not exist", async () => {
             const testScore = {
                 liveness: true,
-                authenticate200: true,
-                authenticate403: true,
-                createAccount201: true,
-                createAccount400: true,
-                createAccount500: true,
                 indexArticles: true,
                 showArticles200: true,
+                showArticles400: true,
                 showArticles404: true,
-                createArticles201: true,
+                createArticles200: true,
                 createArticles400: true,
-                createArticles403: true,
                 updateArticles200: true,
                 updateArticles400: true,
-                updateArticles401: true,
-                updateArticles403: true,
                 updateArticles404: true,
                 deleteArticles200: true,
-                deleteArticles401: true,
-                deleteArticles403: true,
+                deleteArticles400: true,
                 deleteArticles404: true,
             }
             const { body: score } = await chai.request(app).post("/users/507f1f77bcf86cd799439011/updateScore").send(testScore);   
@@ -307,28 +299,19 @@ describe("User controller tests", () => {
         });
 
         it("status 200: returns a user after successful creation", async () => {
-
             const testScore = {
                 liveness: true,
-                authenticate200: true,
-                authenticate403: true,
-                createAccount201: true,
-                createAccount400: true,
-                createAccount500: true,
                 indexArticles: true,
                 showArticles200: true,
+                showArticles400: true,
                 showArticles404: true,
-                createArticles201: true,
+                createArticles200: true,
                 createArticles400: true,
-                createArticles403: true,
                 updateArticles200: true,
                 updateArticles400: true,
-                updateArticles401: true,
-                updateArticles403: true,
                 updateArticles404: true,
                 deleteArticles200: true,
-                deleteArticles401: true,
-                deleteArticles403: true,
+                deleteArticles400: true,
                 deleteArticles404: true,
             }
             const { body: score } = await chai.request(app).post("/users/" + testUser._id + "/updateScore").send(testScore);

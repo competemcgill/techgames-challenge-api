@@ -8,26 +8,6 @@ const scoreSchema: Schema = new Schema({
         type: Boolean,
         select: true
     },
-    authenticate200: {
-        type: Boolean,
-        select: true
-    },
-    authenticate403: {
-        type: Boolean,
-        select: true
-    },
-    createAccount201: {
-        type: Boolean,
-        select: true
-    },
-    createAccount400: {
-        type: Boolean,
-        select: true
-    },
-    createAccount500: {
-        type: Boolean,
-        select: true
-    },
     indexArticles: {
         type: Boolean,
         select: true
@@ -36,19 +16,19 @@ const scoreSchema: Schema = new Schema({
         type: Boolean,
         select: true
     },
+    showArticles400: {
+        type: Boolean,
+        select: true
+    },
     showArticles404: {
         type: Boolean,
         select: true
     },
-    createArticles201: {
+    createArticles200: {
         type: Boolean,
         select: true
     },
     createArticles400: {
-        type: Boolean,
-        select: true
-    },
-    createArticles403: {
         type: Boolean,
         select: true
     },
@@ -57,14 +37,6 @@ const scoreSchema: Schema = new Schema({
         select: true
     },
     updateArticles400: {
-        type: Boolean,
-        select: true
-    },
-    updateArticles401: {
-        type: Boolean,
-        select: true
-    },
-    updateArticles403: {
         type: Boolean,
         select: true
     },
@@ -80,11 +52,7 @@ const scoreSchema: Schema = new Schema({
         type: Boolean,
         select: true
     },
-    deleteArticles401: {
-        type: Boolean,
-        select: true
-    },
-    deleteArticles403: {
+    deleteArticles400: {
         type: Boolean,
         select: true
     },
