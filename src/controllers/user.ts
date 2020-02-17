@@ -36,6 +36,16 @@ const userController = {
         }
     },
 
+    showByGithubUsername: async (req: Request, res: Response) => {
+        try {
+            const username: string = req.params.username;
+            const user: IUserModel = await userDBInteractions.findByGithubUsername(username);
+            user ? res.status(statusCodes.SUCCESS).send(user) : res.status(statusCodes.NOT_FOUND).send({ status: statusCodes.NOT_FOUND, message: "User not found" });
+        } catch (error) {
+            res.status(statusCodes.SERVER_ERROR).send(error);
+        }
+    },
+
     create: async (req: Request, res: Response) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {

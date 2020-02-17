@@ -51,6 +51,8 @@ userRouter.get("/", userValidator("GET /users"), userController.index);
  */
 userRouter.get("/:userId", userValidator("GET /users/:userId"), userController.show);
 
+userRouter.get("/username/:username", userController.showByGithubUsername);
+
 /**
  * @swagger
  * /users:
