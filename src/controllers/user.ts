@@ -28,8 +28,14 @@ const userController = {
         } else {
             try {
                 const userId: string = req.params.userId;
-                const user: IUserModel = await userDBInteractions.find(userId);
-                user ? res.status(statusCodes.SUCCESS).send(user) : res.status(statusCodes.NOT_FOUND).send({ status: statusCodes.NOT_FOUND, message: "User not found" });
+                const user: any = await userDBInteractions.find(userId);
+                if (!user) {
+                    res.status(statusCodes.NOT_FOUND).send({ status: statusCodes.NOT_FOUND, message: "User not found" });
+                } else {
+                    if (req.query.scores == "true") {
+                        user.scores = await scoreDBInteractions.getScoresByUser(user);
+                    } 
+                    res.status(statusCodes.SUCCESS).send(user);                }
             } catch (error) {
                 res.status(statusCodes.SERVER_ERROR).send(error);
             }
