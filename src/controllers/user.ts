@@ -35,7 +35,8 @@ const userController = {
                     if (req.query.scores == "true") {
                         user.scores = await scoreDBInteractions.getScoresByUser(user);
                     } 
-                    res.status(statusCodes.SUCCESS).send(user);                }
+                    res.status(statusCodes.SUCCESS).send(user);
+                }
             } catch (error) {
                 res.status(statusCodes.SERVER_ERROR).send(error);
             }
@@ -45,8 +46,15 @@ const userController = {
     showByGithubUsername: async (req: Request, res: Response) => {
         try {
             const username: string = req.params.username;
-            const user: IUserModel = await userDBInteractions.findByGithubUsername(username);
-            user ? res.status(statusCodes.SUCCESS).send(user) : res.status(statusCodes.NOT_FOUND).send({ status: statusCodes.NOT_FOUND, message: "User not found" });
+            const user: any = await userDBInteractions.findByGithubUsername(username);
+            if (!user) {
+                res.status(statusCodes.NOT_FOUND).send({ status: statusCodes.NOT_FOUND, message: "User not found" });
+            } else {
+                if (req.query.scores == "true") {
+                    user.scores = await scoreDBInteractions.getScoresByUser(user);
+                } 
+                res.status(statusCodes.SUCCESS).send(user);
+            }
         } catch (error) {
             res.status(statusCodes.SERVER_ERROR).send(error);
         }
