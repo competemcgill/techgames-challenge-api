@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { userController } from "../controllers/user";
 import { userValidator } from "../util/userValidator";
+import { middleware } from "../util/middleware";
 
 const userRouter: Router = Router();
 
@@ -21,7 +22,7 @@ const userRouter: Router = Router();
  *          500:
  *              description: Internal server error
  */
-userRouter.get("/", userValidator("GET /users"), userController.index);
+userRouter.get("/", middleware.auth, userValidator("GET /users"), userController.index);
 
 /**
  * @swagger
@@ -49,9 +50,9 @@ userRouter.get("/", userValidator("GET /users"), userController.index);
  *          500:
  *              description: Internal server error
  */
-userRouter.get("/:userId", userValidator("GET /users/:userId"), userController.show);
+userRouter.get("/:userId", middleware.auth, userValidator("GET /users/:userId"), userController.show);
 
-userRouter.get("/username/:username", userController.showByGithubUsername);
+userRouter.get("/username/:username", middleware.auth, userController.showByGithubUsername);
 
 /**
  * @swagger
@@ -127,7 +128,7 @@ userRouter.post("/", userValidator("POST /users"), userController.create);
  *          500:
  *              description: Internal server error
  */
-userRouter.put("/:userId", userValidator("PUT /users/:userId"), userController.update);
+userRouter.put("/:userId", middleware.auth, userValidator("PUT /users/:userId"), userController.update);
 
 /**
  * @swagger
@@ -156,7 +157,7 @@ userRouter.put("/:userId", userValidator("PUT /users/:userId"), userController.u
  *          500:
  *              description: Internal server error
  */
-userRouter.post("/:userId/updateScore", userValidator("POST /users/:userId/updateScore"), userController.updateScore);
+userRouter.post("/:userId/updateScore", middleware.auth, userValidator("POST /users/:userId/updateScore"), userController.updateScore);
 /**
  * @swagger
  * /user/{userId}:
@@ -181,6 +182,6 @@ userRouter.post("/:userId/updateScore", userValidator("POST /users/:userId/updat
  *          500:
  *              description: Internal server error
  */
-userRouter.delete("/:userId", userValidator("DELETE /users/:userId"), userController.delete);
+userRouter.delete("/:userId", middleware.auth, userValidator("DELETE /users/:userId"), userController.delete);
 
 export { userRouter };
