@@ -7,6 +7,9 @@ services:
       - .:/app
     environment:
       - NODE_ENV=dev
+      - GITHUB_CLIENT_SECRET=4c1ac9d7b1a13c0f0ace54ecb771a84ae9284657
+      - GITHUB_CLIENT_ID=6406845fa79968ae369e
+      - SECRET=secret
     working_dir: /app
     command: npm run start:local
     ports:

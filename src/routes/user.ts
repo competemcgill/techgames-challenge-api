@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { userController } from "../controllers/user";
 import { userValidator } from "../util/userValidator";
+import { middleware } from "../util/middleware";
 
 const userRouter: Router = Router();
 
@@ -21,7 +22,7 @@ const userRouter: Router = Router();
  *          500:
  *              description: Internal server error
  */
-userRouter.get("/", userValidator("GET /users"), userController.index);
+userRouter.get("/", middleware.auth, userValidator("GET /users"), userController.index);
 
 /**
  * @swagger
@@ -49,7 +50,9 @@ userRouter.get("/", userValidator("GET /users"), userController.index);
  *          500:
  *              description: Internal server error
  */
-userRouter.get("/:userId", userValidator("GET /users/:userId"), userController.show);
+userRouter.get("/:userId", middleware.auth, userValidator("GET /users/:userId"), userController.show);
+
+userRouter.get("/username/:username", middleware.auth, userController.showByGithubUsername);
 
 /**
  * @swagger
@@ -125,8 +128,36 @@ userRouter.post("/", userValidator("POST /users"), userController.create);
  *          500:
  *              description: Internal server error
  */
-userRouter.put("/:userId", userValidator("PUT /users/:userId"), userController.update);
+userRouter.put("/:userId", middleware.auth, userValidator("PUT /users/:userId"), userController.update);
 
+/**
+ * @swagger
+ * /users/{userId}/updateScore:
+ *  post:
+ *      description: Updates a user's score
+ *      tags:
+ *          - Users
+ *      parameters:
+ *          - in: body
+ *            name: userData
+ *            description: email or password of the new User
+ *            schema:
+ *                type: object
+ *                properties:
+ *                example:
+ *      produces:
+ *          - application/json
+ *      responses:
+ *          200:
+ *              description: Returns new User
+ *          400:
+ *              description: User already exists
+ *          422:
+ *              description: Validation error
+ *          500:
+ *              description: Internal server error
+ */
+userRouter.post("/:userId/updateScore", middleware.auth, userValidator("POST /users/:userId/updateScore"), userController.updateScore);
 /**
  * @swagger
  * /user/{userId}:
@@ -151,6 +182,6 @@ userRouter.put("/:userId", userValidator("PUT /users/:userId"), userController.u
  *          500:
  *              description: Internal server error
  */
-userRouter.delete("/:userId", userValidator("DELETE /users/:userId"), userController.delete);
+userRouter.delete("/:userId", middleware.auth, userValidator("DELETE /users/:userId"), userController.delete);
 
 export { userRouter };

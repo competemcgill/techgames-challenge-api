@@ -6,25 +6,25 @@ export interface IUserModel extends IUser, Document {}
 const userSchema: Schema = new Schema({
     email: {
         type: String,
-        select: false,
+        select: true,
         unique: true
     },
     githubToken: {
         type: String,
-        select: false
+        select: true
     },
     githubUsername: {
         type: String,
-        select: false
+        select: true
     },
     githubRepo: {
         type: String,
-        select: false
+        select: true
     },
-    scores: {
-        type: [Schema.Types.ObjectId],
+    scores: [{
+        type: Schema.Types.ObjectId,
         ref: "Score"
-    }
+    }]
 });
 
 const User: Model<IUserModel> = model<IUserModel>("User", userSchema);

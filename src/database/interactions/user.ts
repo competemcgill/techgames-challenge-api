@@ -19,6 +19,10 @@ export const userDBInteractions = {
         return User.findOne({ email: email }).select(option).exec();
     },
 
+    findByGithubUsername: (username: string, option: string = "-password"): Promise<IUserModel> => {
+        return User.findOne({ githubUsername: username }).select(option).exec();
+    },
+
     update: (userId: string, newUser: IUser): Promise<IUserModel> => {
         return User.findByIdAndUpdate(userId, newUser, { new: true }).exec();
     },

@@ -36,6 +36,7 @@
         "@types/mongodb": "^3.1.26",
         "@types/mongoose": "^5.5.0",
         "@types/node": "^11.13.10",
+        "@types/winston": "^2.4.4",
         "@babel/core": "^7.0.0",
         "chai": "^4.2.0",
         "chai-as-promised": "^7.1.1",
@@ -59,6 +60,8 @@
         "swagger-jsdoc": "^3.2.9",
         "swagger-ui-express": "^4.0.2",
         "tslint": "^5.16.0",
-        "typescript": "^3.4.5"
+        "typescript": "^3.4.5",
+        "express-winston": "^3.1.0",
+        "winston": "^3.2.1"
     }
 }
