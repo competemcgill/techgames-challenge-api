@@ -1,0 +1,13 @@
+language: c
+
+services:
+        - docker
+
+script:
+        - docker build -t idodin/techgames-api-challenge:latest .
+
+dploy:
+        provider: script
+        script: bash docker_push
+        on:
+                branch: master
