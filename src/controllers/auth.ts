@@ -66,6 +66,7 @@ const authController = {
                 }
             }
         } catch (error) {
+            console.log(error);
             res.status(statusCodes.SERVER_ERROR).json({ status: statusCodes.SERVER_ERROR, message: "Server Error" });
         }
     }
