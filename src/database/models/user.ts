@@ -27,6 +27,6 @@ const userSchema: Schema = new Schema({
     }]
 });
 
-const User: Model<IUserModel> = model<IUserModel>("User", userSchema);
+const User: Model<IUserModel> = model<IUserModel>("ChallengeUser", userSchema);
 
 export { User };
