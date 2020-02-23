@@ -1,0 +1,13 @@
+steps:
+  - name: "gcr.io/cloud-builders/docker"
+    args: ["build", "-t", "gcr.io/techgames/techgames-challenge-api:$SHORT_SHA", "."]
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      [
+        "tag",
+        "gcr.io/techgames/techgames-challenge-api:$SHORT_SHA",
+        "gcr.io/techgames/techgames-challenge-api:latest",
+      ]
+  - name: "gcr.io/cloud-builders/docker"
+    args: ["push", "gcr.io/techgames/techgames-challenge-api:$SHORT_SHA"]
+images: ["gcr.io/techgames/techgames-challenge-api:latest"]
