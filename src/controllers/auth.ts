@@ -44,8 +44,6 @@ const authController = {
                         scores: []
                     };
 
-                    console.log(userData);
-
                     if (process.env.NODE_ENV == "production") {
                         try {
                             await axios.post("https://api.github.com/repos/Compete-McGill/techgames-api-challenge-template/forks", {}, {
@@ -54,7 +52,6 @@ const authController = {
                                 }
                             });
                         } catch (error) {
-                            console.log(error);
                             res.status(statusCodes.BAD_REQUEST).send({ status: statusCodes.BAD_REQUEST, message: "Invalid github token" })
                             return;
                         }
