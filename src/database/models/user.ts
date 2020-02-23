@@ -7,7 +7,6 @@ const userSchema: Schema = new Schema({
     email: {
         type: String,
         select: true,
-        unique: true
     },
     githubToken: {
         type: String,
@@ -15,7 +14,8 @@ const userSchema: Schema = new Schema({
     },
     githubUsername: {
         type: String,
-        select: true
+        select: true,
+        unique: true
     },
     githubRepo: {
         type: String,
