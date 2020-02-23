@@ -8,6 +8,8 @@ let dbUrl = "";
     ? dbUrl = process.env.DB_URL
     : dbUrl = "mongodb://mongo:27017/techgames";
 
+console.log(dbUrl);
+
 mongoose.connect(dbUrl, {
     useNewUrlParser: true,
     useFindAndModify: false,
